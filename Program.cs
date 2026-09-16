@@ -34,7 +34,7 @@ else
     Environment.Exit(1);
 }
 
-if (menuChoiceInt == 0)
+if (menuChoiceInt != 1 && menuChoiceInt != 2)
 {
     Console.WriteLine("Not a valid selection.");
     Thread.Sleep(2000);
@@ -47,11 +47,12 @@ else if (menuChoiceInt == 1)
 else if (menuChoiceInt == 2)
 {
     // Run the CreateBudget class
+    CreateBudget.Run(db);
 }
 else
 {
     Environment.Exit(2);
 }
-Console.ReadLine();
-Console.Clear();
-Console.WriteLine("Screen should be clear now");
+
+// Program Ending
+Console.WriteLine("Thank you for using Dollarule");

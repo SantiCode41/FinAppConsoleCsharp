@@ -6,8 +6,12 @@ namespace FinAppCsharp
 {
     internal class Helpers
     {
-        public static string GetString()
+        public static string GetString(string outputText = "")
         {
+            if (outputText != "")
+            {
+                Console.Write(outputText);
+            }
             string returnString = string.Empty;
             try
             {

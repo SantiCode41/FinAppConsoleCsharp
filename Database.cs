@@ -36,6 +36,23 @@ class Database : IDisposable
         create.ExecuteNonQuery();
     }
 
+    public void CreateTableBudget()
+    {
+        var create = _connection.CreateCommand();
+        create.CommandText = """
+            CREATE TABLE IF NOT EXISTS Budget (
+                Id INTEGER PRIMARY KEY AUTOINCREMENT,
+                Month TEXT,
+                Date TEXT,
+                Day TEXT,
+                Item TEXT,
+                Amount TEXT,
+                Balance TEXT,
+                Notes TEXT
+            );
+            """;
+    }
+
     public void InsertStartUpLog(string userName)
     {
         var insert = _connection.CreateCommand();
