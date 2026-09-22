@@ -42,12 +42,13 @@ class Database : IDisposable
         create.CommandText = """
             CREATE TABLE IF NOT EXISTS Budget (
                 Id INTEGER PRIMARY KEY AUTOINCREMENT,
+                Type TEXT,
                 Month TEXT,
                 Date TEXT,
-                Day TEXT,
+                Day INTEGER,
                 Item TEXT,
-                Amount TEXT,
-                Balance TEXT,
+                Amount REAL,
+                Balance REAL,
                 Notes TEXT
             );
             """;

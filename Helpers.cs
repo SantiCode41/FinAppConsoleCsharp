@@ -29,5 +29,19 @@ namespace FinAppCsharp
             }
             return returnString;
         }
+
+        public static void WriteCentered(string text, bool newLine = true)
+        {
+            int left = Math.Max(0, (Console.WindowWidth - text.Length) / 2);
+            Console.SetCursorPosition(left, Console.CursorTop);
+            if (!newLine)
+            {
+                Console.Write(text);
+            }
+            else
+            {
+                Console.WriteLine(text);
+            }
+        }
     }
 }

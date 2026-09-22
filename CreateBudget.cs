@@ -52,5 +52,8 @@ class CreateBudget
     {
         Console.WriteLine("Enter the requested information");
         string dueDate = Helpers.GetString("Due Date: ");
+        string item = Helpers.GetString("Item Name: ");
+        string notes = Helpers.GetString("Notes: ");
+        string type = Helpers.GetString("Type (In or Out): ");
     }
 }
