@@ -1,4 +1,5 @@
 ﻿using Microsoft.Data.Sqlite;
+using System.Security.Cryptography;
 
 class Database : IDisposable
 {
@@ -15,6 +16,7 @@ class Database : IDisposable
         create.CommandText = """
             CREATE TABLE IF NOT EXISTS Users (
                 Id INTEGER PRIMARY KEY AUTOINCREMENT,
+                Username TEXT NOT NULL UNIQUE,
                 FirstName TEXT NOT NULL,
                 LastName TEXT NOT NULL
             );
@@ -69,6 +71,24 @@ class Database : IDisposable
         insert.Parameters.AddWithValue("$dateAndTime", dateAndTime.ToString("g"));
 
         insert.ExecuteNonQuery();
+    }
+
+    public bool FindUserInUserTable(string userName)
+    {
+        var lookup = _connection.CreateCommand();
+        lookup.CommandText = """
+            SELECT COUNT(*) FROM Users WHERE Username = $userName;
+            """;
+        lookup.Parameters.AddWithValue("$userName", userName);
+        long count = (long)lookup.ExecuteScalar();
+        if (count == 0)
+        {
+            return false;
+        }
+        else
+        {
+            return true;
+        }
     }
 
     public void Dispose()

@@ -43,5 +43,35 @@ namespace FinAppCsharp
                 Console.WriteLine(text);
             }
         }
+
+        public static int LogIn(string userName, string password)
+        {
+            // Query DB for userName and password match
+            // If found return userID
+            // If NOT found return -1
+            return -1;
+        }
+
+        public static int CreateNewAccount(Database db)
+        {
+            bool userNameFound = true;
+            string username = string.Empty;
+            while (userNameFound)
+            {
+                Helpers.WriteCentered("Enter desired Username: ", false);
+                username = Helpers.GetString();
+                if (!db.FindUserInUserTable(username))
+                {
+                    userNameFound = false;
+                }
+                else
+                {
+                    Helpers.WriteCentered("Username is already take.");
+                    Helpers.WriteCentered("Please choose a different Username.");
+
+
+                }
+            }
+        }
     }
 }

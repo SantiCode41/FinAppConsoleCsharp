@@ -26,8 +26,12 @@ if (logInOrSignUpMenuSelection == 1)
     userName = Helpers.GetString();
     Helpers.WriteCentered("Password: ", false);
     password = Helpers.GetString();
+    Helpers.LogIn(userName, password);
 }
-
+else if (logInOrSignUpMenuSelection == 2)
+{
+    //Helpers.CreateNewAccount(db);
+}
 
 db.InsertStartUpLog(userName);
 
