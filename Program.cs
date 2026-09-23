@@ -17,17 +17,16 @@ if (welcomeMenuSelection == 2)
 
 Helpers.WriteCentered("Log in or Sign up?");
 int logInOrSignUpMenuSelection = InteractiveMenu.GenerateMenu(["Log In", "Sign Up"], 1);
-string userName = string.Empty;
-string password = string.Empty;
 User currentUser = new User();
 
 if (logInOrSignUpMenuSelection == 1)
 {
-    Helpers.WriteCentered("Username: ", false);
-    userName = Helpers.GetString();
-    Helpers.WriteCentered("Password: ", false);
-    password = Helpers.GetString();
-    Helpers.LogIn(userName, password);
+    currentUser.Copy(Helpers.LogIn(db));
+    if (currentUser.userId != -1)
+    {
+        Helpers.WriteCentered("LOG IN SUCCEEDED");
+        Thread.Sleep(2000);
+    }
 }
 else if (logInOrSignUpMenuSelection == 2)
 {
@@ -35,10 +34,13 @@ else if (logInOrSignUpMenuSelection == 2)
 }
 
 db.InsertStartUpLog(currentUser.username);
+Console.Clear();
 
-
-Console.WriteLine($"Welcome {userName}");
+Helpers.WriteCentered($"Welcome {currentUser.username}");
 Thread.Sleep(3000);
+
+// TODO - Implement LogIn from line 30
+
 
 string menuText = """
 

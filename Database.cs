@@ -121,6 +121,42 @@ class Database : IDisposable
         }
     }
 
+    public bool PasswordCheck(string username, string passwordEntered)
+    {
+        var query = _connection.CreateCommand();
+        query.CommandText = """
+            SELECT Password FROM Users WHERE Username = $username;
+            """;
+        query.Parameters.AddWithValue("$username", username);
+        string userPassword = (string)query.ExecuteScalar();
+        if (passwordEntered.Equals(userPassword, StringComparison.Ordinal))
+        {
+            return true;
+        }
+        else
+        {
+            return false;
+        }
+    }
+
+    public User GetUser(string username)
+    {
+        var query = _connection.CreateCommand();
+        query.CommandText = "SELECT * FROM Users WHERE Username = $username;";
+        query.Parameters.AddWithValue("$username", username);
+        using var reader = query.ExecuteReader();
+        // I may change the following lines later to use Reflection so I can learn it
+        User userFound = new User();
+        reader.Read();
+        userFound.userId = reader.GetInt64(reader.GetOrdinal("Id"));
+        userFound.username = reader.GetString(reader.GetOrdinal("Username"));
+        userFound.firstName = reader.GetString(reader.GetOrdinal("FirstName"));
+        userFound.lastName = reader.GetString(reader.GetOrdinal("LastName"));
+        userFound.password = reader.GetString(reader.GetOrdinal("Password"));
+        return userFound;
+        
+    }
+
     public void Dispose()
     {
         _connection.Dispose();

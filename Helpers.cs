@@ -44,12 +44,41 @@ namespace FinAppCsharp
             }
         }
 
-        public static int LogIn(string userName, string password)
+        public static User LogIn(Database db)
         {
+            string username;
+            string password;
+            User userFound = new User();
             // Query DB for userName and password match
+            while (true)
+            {
+                Helpers.WriteCentered("Username: ", false);
+                username = Helpers.GetString();
+                Helpers.WriteCentered("Password: ", false);
+                password = Helpers.GetString();
+
+                if (!db.FindUserInUserTable(username))
+                {
+                    Helpers.WriteCentered("Invalid log in attempt");
+                    Helpers.WriteCentered("Please try again");
+                }
+                else
+                {
+                    if (!db.PasswordCheck(username, password))
+                    {
+                        Helpers.WriteCentered("Invalid log in attempt");
+                        Helpers.WriteCentered("Please try again");
+                    }
+                    else
+                    {
+                        userFound.Copy(db.GetUser(username));
+                        return userFound;
+                    }
+                }
+            }
             // If found return userID
-            // If NOT found return -1
-            return -1;
+            // If NOT found return a user with id -1
+            return userFound;
         }
 
         public static User CreateNewAccount(Database db)
