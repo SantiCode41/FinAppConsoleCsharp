@@ -1,5 +1,6 @@
 ﻿using Microsoft.Data.Sqlite;
 using System.Security.Cryptography;
+using FinAppCsharp;
 
 class Database : IDisposable
 {
@@ -18,10 +19,39 @@ class Database : IDisposable
                 Id INTEGER PRIMARY KEY AUTOINCREMENT,
                 Username TEXT NOT NULL UNIQUE,
                 FirstName TEXT NOT NULL,
-                LastName TEXT NOT NULL
+                LastName TEXT NOT NULL,
+                Password TEXT NOT NULL
             );
             """;
         create.ExecuteNonQuery();
+    }
+
+    public User AddUserToUserTable(User newUser)
+    {
+        var insert = _connection.CreateCommand();
+        insert.CommandText = """
+            INSERT INTO Users (Username, FirstName, LastName, Password)
+            VALUES ($username, $firstname, $lastname, $password)
+            """;
+        insert.Parameters.AddWithValue("$username", newUser.username);
+        insert.Parameters.AddWithValue("$firstname", newUser.firstName);
+        insert.Parameters.AddWithValue("$lastname", newUser.lastName);
+        insert.Parameters.AddWithValue("$password", newUser.password);
+        insert.ExecuteNonQuery();
+
+        var query = _connection.CreateCommand();
+        query.CommandText = "SELECT Id FROM Users WHERE Username = $username;";
+        query.Parameters.AddWithValue("$username", newUser.username);
+        long userId = (long)query.ExecuteScalar();
+
+        newUser.userId = userId;
+        if (newUser.userId == -1)
+        {
+            Console.WriteLine("Error updating user Id after adding user to user table");
+            Environment.Exit(2);
+        }
+
+        return newUser;
     }
 
     public void CreateTableLogs()

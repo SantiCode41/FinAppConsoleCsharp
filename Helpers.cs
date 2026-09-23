@@ -52,7 +52,7 @@ namespace FinAppCsharp
             return -1;
         }
 
-        public static int CreateNewAccount(Database db)
+        public static User CreateNewAccount(Database db)
         {
             bool userNameFound = true;
             string username = string.Empty;
@@ -68,10 +68,37 @@ namespace FinAppCsharp
                 {
                     Helpers.WriteCentered("Username is already take.");
                     Helpers.WriteCentered("Please choose a different Username.");
-
-
                 }
             }
+
+            bool passwordsMatch = false;
+            string password = string.Empty;
+            string verifyPassword = string.Empty;
+            while (!passwordsMatch)
+            {
+                Helpers.WriteCentered("Enter password: ", false);
+                password = Helpers.GetString();
+                Helpers.WriteCentered("Reenter password: ", false);
+                verifyPassword = Helpers.GetString();
+                if (password.Equals(verifyPassword, StringComparison.Ordinal))
+                {
+                    passwordsMatch = true;
+                }
+                else
+                {
+                    Helpers.WriteCentered("Passwords did not match! Please try again.");
+                }
+            }
+
+            Helpers.WriteCentered("Enter first name: ", false);
+            string firstName = Helpers.GetString();
+            Helpers.WriteCentered("Enter last name: ", false);
+            string lastName = Helpers.GetString();
+
+            User newUser = new User(username, firstName, lastName, password);
+            newUser = db.AddUserToUserTable(newUser);
+            return newUser;            
+
         }
     }
 }

@@ -19,7 +19,8 @@ Helpers.WriteCentered("Log in or Sign up?");
 int logInOrSignUpMenuSelection = InteractiveMenu.GenerateMenu(["Log In", "Sign Up"], 1);
 string userName = string.Empty;
 string password = string.Empty;
-string confirmPassword = string.Empty;
+User currentUser = new User();
+
 if (logInOrSignUpMenuSelection == 1)
 {
     Helpers.WriteCentered("Username: ", false);
@@ -30,10 +31,11 @@ if (logInOrSignUpMenuSelection == 1)
 }
 else if (logInOrSignUpMenuSelection == 2)
 {
-    //Helpers.CreateNewAccount(db);
+    currentUser.Copy(Helpers.CreateNewAccount(db));
 }
 
-db.InsertStartUpLog(userName);
+db.InsertStartUpLog(currentUser.username);
+
 
 Console.WriteLine($"Welcome {userName}");
 Thread.Sleep(3000);
