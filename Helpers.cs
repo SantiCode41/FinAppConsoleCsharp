@@ -61,6 +61,7 @@ namespace FinAppCsharp
                 {
                     Helpers.WriteCentered("Invalid log in attempt");
                     Helpers.WriteCentered("Please try again");
+
                 }
                 else
                 {
@@ -76,8 +77,8 @@ namespace FinAppCsharp
                     }
                 }
             }
-            // If found return userID
-            // If NOT found return a user with id -1
+            // This code will be reachable once I add the menu option after a failed attempt
+            // that will ask a user if they want to try again or exit.
             return userFound;
         }
 

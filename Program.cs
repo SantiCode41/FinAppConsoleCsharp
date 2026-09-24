@@ -19,7 +19,7 @@ Helpers.WriteCentered("Log in or Sign up?");
 int logInOrSignUpMenuSelection = InteractiveMenu.GenerateMenu(["Log In", "Sign Up"], 1);
 User currentUser = new User();
 
-if (logInOrSignUpMenuSelection == 1)
+if (logInOrSignUpMenuSelection == 1)  // Log In
 {
     currentUser.Copy(Helpers.LogIn(db));
     if (currentUser.userId != -1)
@@ -28,58 +28,33 @@ if (logInOrSignUpMenuSelection == 1)
         Thread.Sleep(2000);
     }
 }
-else if (logInOrSignUpMenuSelection == 2)
+else if (logInOrSignUpMenuSelection == 2)  // Sign Up
 {
     currentUser.Copy(Helpers.CreateNewAccount(db));
+
 }
 
 db.InsertStartUpLog(currentUser.username);
 Console.Clear();
 
 Helpers.WriteCentered($"Welcome {currentUser.username}");
-Thread.Sleep(3000);
+Helpers.WriteCentered($"Please make a selection");
 
-// TODO - Implement LogIn from line 30
+int mainMenuSelection = InteractiveMenu.GenerateMenu(["View Budget", "Create Budget"], 2);
 
-
-string menuText = """
-
-    1 - View Budget
-    2 - Create Budget
-    Make Selection: 
-    """;
-Console.Write(menuText);
-string menuChoice = Helpers.GetString();
-int menuChoiceInt = 0;
-if (int.TryParse(menuChoice, out int n))
+if (mainMenuSelection == 1)  // View Budget
 {
-    menuChoiceInt = n;
+    //TODO - Run the ViewBudget class
 }
-else
+else if (mainMenuSelection == 2)  // Create budget
 {
-    Console.WriteLine("Not a valid selection.");
-    Thread.Sleep(2000);
-    Environment.Exit(1);
-}
-
-if (menuChoiceInt != 1 && menuChoiceInt != 2)
-{
-    Console.WriteLine("Not a valid selection.");
-    Thread.Sleep(2000);
-    Environment.Exit(1);
-}
-else if (menuChoiceInt == 1)
-{
-    // Run the ViewBudget class
-}
-else if (menuChoiceInt == 2)
-{
-    // Run the CreateBudget class
+    //TODO - Run the CreateBudget class
     CreateBudget.Run(db);
 }
 else
 {
-    Environment.Exit(2);
+    Console.WriteLine("Error occured at main menu");
+    Environment.Exit(3);
 }
 
 // Program Ending

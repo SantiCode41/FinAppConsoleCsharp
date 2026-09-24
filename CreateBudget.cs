@@ -7,42 +7,21 @@ class CreateBudget
         db.CreateTableBudget();
 
         Console.Clear();
-        string menuText = """
-            1 - Create Manually
-            2 - Upload File
-            """;
-        Console.WriteLine(menuText);
+        Helpers.WriteCentered("Create New Budget");
+        int createBudgetMenuSelection = InteractiveMenu.GenerateMenu(["Create Manually", "Create from upload file"], 1);
 
-        string menuChoice = Helpers.GetString();
-        int menuChoiceInt = 0;
-        if (int.TryParse(menuChoice, out int n))
+        if (createBudgetMenuSelection == 1)
         {
-            menuChoiceInt = n;
+            //TODO - Run the CreateManually method
+
+        }
+        else if (createBudgetMenuSelection == 2)
+        {
+            //TODO - Run the CreateViaUploadFile method
         }
         else
         {
-            Console.WriteLine("Not a valid selection.");
-            Thread.Sleep(2000);
-            Environment.Exit(1);
-        }
-
-        if (menuChoiceInt != 1 && menuChoiceInt != 2)
-        {
-            Console.WriteLine("Not a valid selection.");
-            Thread.Sleep(2000);
-            Environment.Exit(1);
-        }
-        else if (menuChoiceInt == 1)
-        {
-            // Run the CreateManually method
-            CreateManually(db);
-        }
-        else if (menuChoiceInt == 2)
-        {
-            // Run the UploadFile method
-        }
-        else
-        {
+            Console.WriteLine("Error at create budget menu selection");
             Environment.Exit(2);
         }
 
