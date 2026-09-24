@@ -4,38 +4,61 @@ using Microsoft.Data.Sqlite;
 using var db = new Database();
 StartUpSequence.Run(db);
 
-// Prototype of the interactive menu
-//int mainMenuSelection = InteractiveMenu.GenerateMenu(["Option 1", "Option 2", "Option 3"]);
-//Console.WriteLine(mainMenuSelection);
-
-Helpers.WriteCentered("WELCOME TO DOLLARULE!!!");
-int welcomeMenuSelection = InteractiveMenu.GenerateMenu(["ENTER", "QUIT"], 1);
-if (welcomeMenuSelection == 2)
-{
-    Environment.Exit(0);    
-}
-
-Helpers.WriteCentered("Log in or Sign up?");
-int logInOrSignUpMenuSelection = InteractiveMenu.GenerateMenu(["Log In", "Sign Up"], 1);
+// Prototype program loop
+string desiredAction = "Main Menu";
 User currentUser = new User();
-
-if (logInOrSignUpMenuSelection == 1)  // Log In
+int welcomeMenuSelection;
+int logInOrSignUpMenuSelection;
+bool running = true;
+while (running)
 {
-    currentUser.Copy(Helpers.LogIn(db));
-    if (currentUser.userId != -1)
+    switch (desiredAction)
     {
-        Helpers.WriteCentered("LOG IN SUCCEEDED");
-        Thread.Sleep(2000);
+        case "Main Menu":
+            Helpers.WriteCentered("WELCOME TO DOLLARULE!!!");
+            welcomeMenuSelection = InteractiveMenu.GenerateMenu(["ENTER", "QUIT"], 1);
+            if (welcomeMenuSelection == 1)
+            {
+                desiredAction = "Log In or Sign Up";
+            }
+            else if (welcomeMenuSelection == 2)
+            {
+                desiredAction = "Exit Program";
+            }
+            break;
+        case "Log In or Sign Up":
+            Helpers.WriteCentered("Log in or Sign up?");
+            logInOrSignUpMenuSelection = InteractiveMenu.GenerateMenu(["Log In", "Sign Up"], 1);
+            
+            if (logInOrSignUpMenuSelection == 1)  // Log In
+            {
+                currentUser.Copy(Helpers.LogIn(db));
+                if (currentUser.userId != -1)
+                {
+                    Helpers.WriteCentered("LOG IN SUCCEEDED");
+                    Thread.Sleep(2000);
+                }
+            }
+            else if (logInOrSignUpMenuSelection == 2)  // Sign Up
+            {
+                currentUser.Copy(Helpers.CreateNewAccount(db));
+
+            }
+
+            db.InsertStartUpLog(currentUser.username);
+            Console.Clear();
+        default:
+            Console.WriteLine("Invalid action requested.");
+            Console.WriteLine("Closing program.");
+            Thread.Sleep(2500);
+            running = false;
+            break;
+
     }
 }
-else if (logInOrSignUpMenuSelection == 2)  // Sign Up
-{
-    currentUser.Copy(Helpers.CreateNewAccount(db));
 
-}
-
-db.InsertStartUpLog(currentUser.username);
-Console.Clear();
+Console.WriteLine("Program loop has been exited");
+return;
 
 Helpers.WriteCentered($"Welcome {currentUser.username}");
 Helpers.WriteCentered($"Please make a selection");
